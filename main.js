@@ -8,8 +8,7 @@ let savelist = document.querySelector('.savelistbtn');
 
 //add action listener
 addlist.addEventListener('click', addNewItem);
-document.addEventListener('DOMContentLoaded', getTodoListOnLoad);
-//todoList.addEventListener('click', handelDeleteOrEdit);
+document.addEventListener('DOMContentLoaded', Load);
 
 
 //function to add task list into the ul
@@ -19,18 +18,14 @@ function addNewItem(e){
 
     if(listinput.value!=""){ 
     let newDiv= document.createElement('div')
-      let newItem = `
-        <li>${listinput.value}</li>
-        <i class="fa-solid fa-pen"></i>
-        <i class="fa-solid fa-trash"></i>`;
+      let newItem ;
 
       newDiv.innerHTML= newItem;
       listinput.appendChild(newDiv)
-     // newDiv.classList.add('todo-item') //add style for div
 
       saveToLocalStorage(listinput.value);
     }
-    listinput.value = ""; //!once task added leave the input blank
+    listinput.value = ""; 
 
 }
 
@@ -41,47 +36,36 @@ function saveToLocalStorage(todo){
     todos=[]
     }
     else {
-        todos=JSON.parse(localStorage.getItem('todos'))//transforming json string into a js object
+        todos=JSON.parse(localStorage.getItem('todos'))
     }
     todos.push(todo)
-    localStorage.setItem('todos', JSON.stringify(todos))//transforming into js object to json string 
+    localStorage.setItem('todos', JSON.stringify(todos))
 }
 
-// get list in page when it loaded
-function getTodoListOnLoad(){
+
+function Load(){
     if(localStorage.getItem('todos')){
         todos= JSON.parse(localStorage.getItem('todos'))
     }
 
     todos.forEach(todo => {
         let newDiv= document.createElement('div')
-      let newItem = `
-        <li>${todo}</li>
-        <i class="fa-solid fa-pen"></i>
-        <i class="fa-solid fa-trash"></i>
-      `;
+      let newItem ;
       newDiv.innerHTML= newItem;
       todoList.appendChild(newDiv)
     //  newDiv.classList.add('todo-item')
     });
 }
 
-// function responsible to handel if the event for delete or edit depends on the class
-function handelDeleteOrEdit(e){
-  if(e.target.classList.contains('fa-trash'))
-  deleteTodo(e);
-  if(e.target.classList.contains("fa-pen"))
-  editTodo(e);
-}
 
 //delete function 
 function deleteTodo(e){
-   let item = e.target.parentNode; //access the parent of e which is div
-   let array=JSON.parse(localStorage.getItem('todos')) //access the array from local storage
-   let itemDelete=array.indexOf(item.innerText)//get the index for item 
-   array.splice(itemDelete, 1)//delete item from array
-   localStorage.setItem('todos', JSON.stringify(array))//add array to local storage after delete item
-   item.remove();//remove the item from the page
+   let item = e.target.parentNode; 
+   let array=JSON.parse(localStorage.getItem('todos'))
+   let itemDelete=array.indexOf(item.innerText)
+   array.splice(itemDelete, 1)
+   localStorage.setItem('todos', JSON.stringify(array))
+   item.remove();
 }
 //edit function
 // function editTodo(e){
